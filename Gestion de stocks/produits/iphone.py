@@ -1,4 +1,4 @@
-import produit
+from produits.produit import Article
 
 class Iphone(Article):
   def __init__(self, nom_produit, modele, reference, prix, quantitee, couleur, memoire):

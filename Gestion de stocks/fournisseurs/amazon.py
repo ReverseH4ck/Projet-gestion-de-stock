@@ -1,4 +1,4 @@
-from fournisseur import Fournisseur
+from fournisseurs.fournisseur import Fournisseur
 
 class Amazon(Fournisseur):
     def __init__(self, nom_fournisseur, num_telephone, email, adresse):
