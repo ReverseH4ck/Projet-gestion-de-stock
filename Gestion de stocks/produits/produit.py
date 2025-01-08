@@ -1,4 +1,4 @@
-class Produit:
+class Article:
   def __init__(self, nom_produit, prix, modele, reference, quantitee):
     self.nom_produit = nom_produit
     self.modele = modele
@@ -6,7 +6,7 @@ class Produit:
     self.prix = prix
     self.quantitee = quantitee
 
-  def caracteristique(self):
+  def caracteristique_produit(self):
     print(f"Produit : {self.nom_produit}\n"
           f"Prix : {self.prix} €\n"
           f"Modèle : {self.modele}\n"

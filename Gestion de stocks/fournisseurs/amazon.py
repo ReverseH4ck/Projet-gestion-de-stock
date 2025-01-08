@@ -5,4 +5,4 @@ class Amazon(Fournisseur):
         super().__init__(nom_fournisseur, num_telephone, email, adresse)
     
     def informations(self):
-        super().informations_fournisseur()
+        super().information_fournisseur()
