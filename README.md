@@ -38,10 +38,10 @@ Exécutez le script principal pour démarrer l'application :
 python main.py
 ```
 
-Testez la connection à la base de données :
+Testez la connection à la base de données. Dans le dossier utils :
 
 ```bash
-python utils/db_connection.py
+python db_connection.py
 ```
 
 ---
