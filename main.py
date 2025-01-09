@@ -10,8 +10,6 @@ window.geometry("1920x1080")
 window.iconbitmap("logo.ico")
 window.config(background='#212122')
 
-
-
 # Limiter l'utilisateur à la réduction de taille de la fenêtre
 window.minsize(480, 360)
 
@@ -28,9 +26,11 @@ label_title = Label(frame, text="Bienvenue sur l'application", font=("Courier", 
 
 label_title.pack(expand=YES)
 
+
 # Boutons - Fonctionnalité
 def open_github():
     webbrowser.open_new("https://github.com/ReverseH4ck/Projet-gestion-de-stock")
+
 
 def quit():
     window.destroy()
@@ -44,15 +44,13 @@ brapports = Button(frame, text="📊 Rapports", font=("Impact", 40), bg='#c75402
 bquitter = Button(frame, text="❌ Quitter", font=("Impact", 40), bg='#c75402', fg='white', command=quit)
 bgithub = Button(frame, text="🔗 Github", font=("Impact", 40), bg='#c75402', fg='white', command=open_github)
 
-
-# Boutons - Affichage 
+# Boutons - Affichage
 bproduits.pack(pady=25, fill=X)
 bfournisseurs.pack(pady=25, fill=X)
 bventes.pack(pady=25, fill=X)
 brapports.pack(pady=25, fill=X)
 bgithub.pack(pady=25, fill=X)
 bquitter.pack(pady=25, fill=X)
-
 
 # Afficher la fenêtre
 window.mainloop()
