@@ -1,20 +1,15 @@
 from produits.produit import Article
 from fournisseurs.fournisseur import Fournisseur
-from produits.iphone import Iphone
-from fournisseurs.amazon import Amazon
 
 
 def main():
-  iphone16_pro_max = Iphone("iphone 16", 1700, "iphone 16 pro max", 50, 987654321, "Noir",  256)
-  iphone16_pro_max.caracteristique()
 
-  nom_fournisseur = input("Entrez votre nom : ")
-  num_fournisseur = int(input("Entrez votre numero : "))
-  email = input("Entrez votre email : ")
-  adresse = input("Entrez votre adresse : ")
+  produit = Article.ajout_article()
+  produit.caracteristique_produit()
 
-  amazon = Amazon(nom_fournisseur, num_fournisseur, email, adresse)
-  amazon.informations()
+  fournisseur = Fournisseur.ajout_fournisseur()
+  fournisseur.information_fournisseur()
+
 
 if __name__ == "__main__":
   main()
