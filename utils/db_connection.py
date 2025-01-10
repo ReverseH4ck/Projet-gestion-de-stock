@@ -29,8 +29,8 @@ def connexion() -> None:
         # Gestion des erreurs liées aux données mal formatées ou manquantes
         logging.error(f"Une erreur liée aux données est survenue : {e}")
     except Error as e:
-        # Erreurs spécifiques à MySQL
-        logging.error(f"Erreur de connexion à la base de données MySQL : {e}")
+        # Erreurs spécifiques à MariaDB
+        logging.error(f"Erreur de connexion à la base de données MariaDB : {e}")
     except Exception as e:
         # Toute autre erreur inattendue
         logging.error(f"Une erreur inattendue est survenue : {e}")
