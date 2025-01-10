@@ -11,30 +11,31 @@ window.iconbitmap("Interface/ressources/logo.ico")
 window.config(background='#212122')
 window.minsize(480, 360)
 
-# Frame Produit
+# Page Produit
 frame_produit = Frame(window, bg='#212122')
 
 def openproduits():
     frame.pack_forget()
     frame_produit.pack(expand=YES, fill=BOTH)
 
-# Contenu du frame produits
+# Contenu de la page produit
 label_title2 = Label(frame_produit, text="Produits ", font=("Impact", 60), bg='#212122', fg='#c75402')
 label_title2.pack(pady=20)  
 
 
-#Frame Menu
+# Page Principal
 frame = Frame(window, bg='#212122')
-# Ajout de texte 
+frame.pack(expand=YES)
+
+#Contenu de la page principal
+# TITRE
 label_title = Label(frame, text="APPLICATION", font=("Impact", 60), bg='#212122', fg='#c75402')
 label_title.pack(expand=YES)
 
-# Afficher le frame 
-frame.pack(expand=YES)
-
+# SOUS-TITRE
 label_title = Label(frame, text="Bienvenue sur l'application", font=("Courier", 20), bg='#212122', fg='white')
-
 label_title.pack(expand=YES)
+
 
 # Boutons - Quitter
 def quit():
