@@ -19,7 +19,7 @@
 
 ## 🔑 Configuration
 
-Pour connecter votre application à la base de données MySQL, vous devrez récupérer le fichier `config.json`. Ce fichier contient les informations de connexion à la base de données.
+Pour connecter votre application à la base de données MariaDB, vous devrez récupérer le fichier `config.json`. Ce fichier contient les informations de connexion à la base de données.
 
 ### Étapes pour obtenir `config.json` :
 1. Rendez-vous sur le Discord du projet.
