@@ -9,6 +9,10 @@ window.title("Projet")
 window.geometry("1920x1080")
 window.iconbitmap("Interface/ressources/logo.ico")
 window.config(background='#212122')
+
+
+
+# Limiter l'utilisateur à la réduction de taille de la fenêtre
 window.minsize(480, 360)
 
 # Page Produit
@@ -37,7 +41,10 @@ label_title = Label(frame, text="Bienvenue sur l'application", font=("Courier", 
 label_title.pack(expand=YES)
 
 
-# Boutons - Quitter
+# Boutons - Fonctionnalité
+def open_github():
+    webbrowser.open_new("https://github.com/ReverseH4ck/Projet-gestion-de-stock")
+
 def quit():
     window.destroy()
 
@@ -49,14 +56,12 @@ bventes = Button(frame, text="🛒 Ventes", font=("Impact", 40), bg='#c75402', f
 brapports = Button(frame, text="📊 Rapports", font=("Impact", 40), bg='#c75402', fg='white')
 bquitter = Button(frame, text="❌ Quitter", font=("Impact", 40), bg='#c75402', fg='white', command=quit)
 
-
-# Boutons - Affichage 
+# Boutons - Affichage
 bproduits.pack(pady=25, fill=X)
 bfournisseurs.pack(pady=25, fill=X)
 bventes.pack(pady=25, fill=X)
 brapports.pack(pady=25, fill=X)
 bquitter.pack(pady=25, fill=X)
-
 
 # Afficher la fenêtre
 window.mainloop()
