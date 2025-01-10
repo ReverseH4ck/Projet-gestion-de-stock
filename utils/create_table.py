@@ -4,6 +4,7 @@ from utils import db_connection_open as db_connection
 
 
 class DbManage:
+
     @staticmethod
     def create_table():
         """
