@@ -1,3 +1,8 @@
 .idea/
 config.json
 .env
+Gestion de stocks/fournisseurs/__pycache__/__init__.cpython-313.pyc
+Gestion de stocks/fournisseurs/__pycache__/fournisseur.cpython-313.pyc
+Gestion de stocks/produits/__pycache__/produit.cpython-313.pyc
+utils/__pycache__/get_db_info.cpython-311.pyc
+Gestion de stocks/fournisseurs/__pycache__/fournisseur.cpython-313.pyc
