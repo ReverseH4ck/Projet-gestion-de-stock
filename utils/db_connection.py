@@ -18,10 +18,14 @@ def connexion():
         print(f"Erreur de connexion : {e}")
 
     finally:
-        # Fermer la connexion si elle est ouverte
-        if 'connection' in locals() and connection.is_connected():
-            connection.close()
-            print("Connexion fermée.")
+        try:
+            if connection.is_connected():
+                connection.close()
+                print("Connexion fermée.")
+        except NameError:
+            pass  # In case 'connection' was never defined
+        except Exception as e:
+            print(f"Error while closing the connection: {e}")
 
 
 if __name__ == "__main__":
