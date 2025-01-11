@@ -30,7 +30,7 @@ class DbManage:
                     modele VARCHAR(255) NOT NULL,
                     reference VARCHAR(255) NOT NULL,
                     quantitee INT NOT NULL,
-                    PRIMARY KEY (nom_produit)
+                    PRIMARY KEY (reference)
                 )
                 """)
 
