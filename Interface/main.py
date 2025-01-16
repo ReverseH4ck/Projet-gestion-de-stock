@@ -62,18 +62,25 @@ bquitter = Button(frame, text="❌ Quitter", font=("Impact", 20), bg='#c75402', 
 bmenu = Button(frame_menu, text="🏠", font=("Impact", 20), bg='#c75402', fg='white',command=open_menu)
 bajout = Button(frame_produit, text="+ Ajouter", font=("Impact", 20), bg='#c75402', fg='white',)
 bmodifier = Button(frame_produit, text="✏️ Modifier", font=("Impact", 20), bg='#c75402', fg='white',)
-bsupprimer = Button(frame_produit, text="🗑️Supprimer", font=("Impact", 20), bg='#c75402', fg='white',)
+bsupprimer = Button(frame_produit, text="💥Supprimer", font=("Impact", 20), bg='#c75402', fg='white',)
 
 # Boutons - Affichage
-bproduits.pack(pady=25, fill=X)
+bproduits.pack(pady=25, fill=X,)
 bfournisseurs.pack(pady=25, fill=X)
 bventes.pack(pady=25, fill=X)
 brapports.pack(pady=25, fill=X)
 bquitter.pack(pady=25, fill=X)
 bmenu.pack(pady=25,)
+
+# Boutons - Affichage (Fenêtre Produits) 
 bajout.pack(pady=25,)
+bajout.place(x=470,y=120)
+
 bmodifier.pack(pady=25,)
+bmodifier.place(x=595,y=120)
+
 bsupprimer.pack(pady=25,)
+bsupprimer.place(x=755,y=120)
 
 # Fonctions de survol des boutons
 def entree(event):
@@ -88,7 +95,7 @@ def sortie(event):
     event.widget.config(cursor="")  
 
 # Utilisations de nos fonctions survols pour nos boutons 
-for button in [bproduits, bfournisseurs, bventes, brapports, bquitter]:
+for button in [bproduits, bfournisseurs, bventes, brapports, bquitter, bajout,bmodifier,bsupprimer,bmenu]:
     button.bind("<Enter>", entree)
     button.bind("<Leave>", sortie)
 
