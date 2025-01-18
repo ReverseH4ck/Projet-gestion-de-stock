@@ -7,7 +7,7 @@ from PIL import Image, ImageTk
 window = Tk()
 window.title("Projet")
 window.geometry("1920x1080")
-window.iconbitmap("ressources/logo.ico")
+window.iconbitmap("Interface/ressources/logo.ico")
 window.config(background='#212122')
 
 
