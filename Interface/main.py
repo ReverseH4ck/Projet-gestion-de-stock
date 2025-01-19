@@ -7,13 +7,18 @@ from PIL import Image, ImageTk
 window = Tk()
 window.title("Projet")
 window.geometry("1920x1080")
-window.iconbitmap("ressources/logo.ico")
+window.iconbitmap("Interface/ressources/logo.ico")
 window.config(background='#212122')
 
 
 
 # Limiter l'utilisateur à la réduction de taille de la fenêtre
 window.minsize(480, 360)
+
+# BOUTON MENU
+
+frame_menu = Frame(window, bg='#212122')
+frame_menu.pack(side=RIGHT, anchor=N)
 
 # Page Produit
 frame_produit = Frame(window, bg='#212122')
@@ -40,21 +45,25 @@ label_title.pack(expand=YES)
 label_title = Label(frame, text="Bienvenue sur l'application", font=("Courier", 20), bg='#212122', fg='white')
 label_title.pack(expand=YES)
 
+# -- BOUTONS --
 
 # Boutons - Fonctionnalité
-def open_github():
-    webbrowser.open_new("https://github.com/ReverseH4ck/Projet-gestion-de-stock")
 
 def quit():
     window.destroy()
 
+# Bouton Menu - Fonctionnalité
+def open_menu():
+    frame_produit.pack_forget()
+    frame.pack()
 
 # Boutons - Apparence
-bproduits = Button(frame, text="📦 Produits", font=("Impact", 40), bg='#c75402', fg='white', command=openproduits)
-bfournisseurs = Button(frame, text="🚚 Fournisseurs", font=("Impact", 40), bg='#c75402', fg='white')
-bventes = Button(frame, text="🛒 Ventes", font=("Impact", 40), bg='#c75402', fg='white')
-brapports = Button(frame, text="📊 Rapports", font=("Impact", 40), bg='#c75402', fg='white')
-bquitter = Button(frame, text="❌ Quitter", font=("Impact", 40), bg='#c75402', fg='white', command=quit)
+bproduits = Button(frame, text="📦 Produits", font=("Impact", 20), bg='#c75402', fg='white', command=openproduits)
+bfournisseurs = Button(frame, text="🚚 Fournisseurs", font=("Impact", 20), bg='#c75402', fg='white')
+bventes = Button(frame, text="🛒 Ventes", font=("Impact", 20), bg='#c75402', fg='white')
+brapports = Button(frame, text="📊 Rapports", font=("Impact", 20), bg='#c75402', fg='white')
+bquitter = Button(frame, text="❌ Quitter", font=("Impact", 20), bg='#c75402', fg='white', command=quit)
+bmenu = Button(frame_menu, text="🏠", font=("Impact", 20), bg='#c75402', fg='white',command=open_menu)
 
 # Boutons - Affichage
 bproduits.pack(pady=25, fill=X)
@@ -62,6 +71,24 @@ bfournisseurs.pack(pady=25, fill=X)
 bventes.pack(pady=25, fill=X)
 brapports.pack(pady=25, fill=X)
 bquitter.pack(pady=25, fill=X)
+bmenu.pack(pady=25,)
+
+# Fonctions de survol des boutons
+def entree(event):
+    event.widget['background'] = '#9e4202'  
+    event.widget['foreground'] = '#95ff00'   
+    event.widget.config(cursor="hand2")
+
+
+def sortie(event):
+    event.widget['background'] = '#c75402'  
+    event.widget['foreground'] = 'white'  
+    event.widget.config(cursor="")  
+
+# Utilisations de nos fonctions survols pour nos boutons 
+for button in [bproduits, bfournisseurs, bventes, brapports, bquitter]:
+    button.bind("<Enter>", entree)
+    button.bind("<Leave>", sortie)
 
 # Afficher la fenêtre
 window.mainloop()
