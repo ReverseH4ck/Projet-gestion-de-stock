@@ -14,7 +14,7 @@ class Article:
     prix = float(input("Prix : "))
     modele = input("Modèle : ")
     reference = input("Référence : ")
-    quantitee = input("Quantées : ")
+    quantitee = input("Quantitées : ")
     return Article(nom_produit, prix, modele, reference, quantitee)
   
   def get_nom_produit(self):
@@ -42,7 +42,7 @@ class Article:
 
   def recuperer_article(reference):
     try:
-      connection = db_connection()
+      connection = db_connection_open()
       cursor = connection.cursor(dictionary=True)
       query = "SELECT * FROM articles WHERE reference = %s"
       cursor.execute(query, (reference,))
@@ -79,7 +79,7 @@ class Article:
   
   def sauvegarde_modification(self):
     try:
-      connection = db_connection()
+      connection = db_connection_open()
       cursor = connection.cursor()
       query = "UPDATE articles SET nom = %s, modele = %s, quantitee = %s WHERE reference = %s"
       data = (self.nom_produit, self.prix, self.modele, self.quantitee, self.reference)
