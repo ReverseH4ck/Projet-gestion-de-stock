@@ -7,18 +7,14 @@ from PIL import Image, ImageTk
 window = Tk()
 window.title("Projet")
 window.geometry("1920x1080")
-window.iconbitmap("Interface/ressources/logo.ico")
+window.iconbitmap("")
 window.config(background='#212122')
-
-
-
-# Limiter l'utilisateur à la réduction de taille de la fenêtre
 window.minsize(480, 360)
 
 # BOUTON MENU
 
 frame_menu = Frame(window, bg='#212122')
-frame_menu.pack(side=RIGHT, anchor=N)
+frame_menu.pack(side=LEFT, anchor=N, padx=30)
 
 # Page Produit
 frame_produit = Frame(window, bg='#212122')
@@ -64,14 +60,27 @@ bventes = Button(frame, text="🛒 Ventes", font=("Impact", 20), bg='#c75402', f
 brapports = Button(frame, text="📊 Rapports", font=("Impact", 20), bg='#c75402', fg='white')
 bquitter = Button(frame, text="❌ Quitter", font=("Impact", 20), bg='#c75402', fg='white', command=quit)
 bmenu = Button(frame_menu, text="🏠", font=("Impact", 20), bg='#c75402', fg='white',command=open_menu)
+bajout = Button(frame_produit, text="+ Ajouter", font=("Impact", 20), bg='#c75402', fg='white',)
+bmodifier = Button(frame_produit, text="✏️ Modifier", font=("Impact", 20), bg='#c75402', fg='white',)
+bsupprimer = Button(frame_produit, text="💥Supprimer", font=("Impact", 20), bg='#c75402', fg='white',)
 
 # Boutons - Affichage
-bproduits.pack(pady=25, fill=X)
+bproduits.pack(pady=25, fill=X,)
 bfournisseurs.pack(pady=25, fill=X)
 bventes.pack(pady=25, fill=X)
 brapports.pack(pady=25, fill=X)
 bquitter.pack(pady=25, fill=X)
 bmenu.pack(pady=25,)
+
+# Boutons - Affichage (Fenêtre Produits) 
+bajout.pack(pady=25,)
+bajout.place(x=470,y=120)
+
+bmodifier.pack(pady=25,)
+bmodifier.place(x=595,y=120)
+
+bsupprimer.pack(pady=25,)
+bsupprimer.place(x=755,y=120)
 
 # Fonctions de survol des boutons
 def entree(event):
@@ -86,7 +95,7 @@ def sortie(event):
     event.widget.config(cursor="")  
 
 # Utilisations de nos fonctions survols pour nos boutons 
-for button in [bproduits, bfournisseurs, bventes, brapports, bquitter]:
+for button in [bproduits, bfournisseurs, bventes, brapports, bquitter, bajout,bmodifier,bsupprimer,bmenu]:
     button.bind("<Enter>", entree)
     button.bind("<Leave>", sortie)
 
