@@ -1,7 +1,7 @@
 import mysql.connector
 from mysql.connector import Error
 import logging
-from utils.get_db_info import Log
+from get_db_info import Log
 
 # Configurer le module logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
