@@ -3,33 +3,33 @@ import os
 
 
 class Log:
+    @staticmethod
     def settings():
-        # Définition du chemin du fichier config.json dans le répertoire racine
-        project_root = os.path.dirname(os.path.abspath(__file__))  # Répertoire courant du fichier
-        config_path = os.path.join(project_root, "../config.json")
+        # Dynamically resolve the path to config.json in the root folder
+        root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+        config_path = os.path.join(root_dir, "config.json")
 
-        # Vérification de l'existence du fichier config.json
+        # Check if the config.json file exists
         if not os.path.exists(config_path):
             raise FileNotFoundError(
-                f"Le fichier de configuration config.json est introuvable à l'emplacement suivant : {config_path}")
+                f"Le fichier de configuration config.json est introuvable à l'emplacement : {config_path}"
+            )
 
-        # Lecture du contenu du fichier config.json
+        # Read the content of config.json
         try:
             with open(config_path, 'r', encoding="utf-8") as config_file:
                 config = json.load(config_file)
         except json.JSONDecodeError as e:
-            raise ValueError(f"JSON invalide dans le fichier de configuration : {e}")
+            raise ValueError(f"JSON invalide dans le fichier config.json : {e}")
 
-        config = json.load(open("../config.json", 'r', encoding="utf-8"))
-        host = config["database-host"]
-        port = config["database-port"]
-        database = config["database-name"]
-        user = config["database-user"]
-        password = config["database-password"]
-        return {
-            "host": host,
-            "port": port,
-            "database": database,
-            "user": user,
-            "password": password
-        }
+        # Fetch and return the required fields
+        try:
+            return {
+                "host": config["database-host"],
+                "port": config["database-port"],
+                "database": config["database-name"],
+                "user": config["database-user"],
+                "password": config["database-password"],
+            }
+        except KeyError as e:
+            raise KeyError(f"Clé manquante dans le fichier config.json : {e}")
