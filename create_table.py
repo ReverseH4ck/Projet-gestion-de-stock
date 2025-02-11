@@ -28,7 +28,7 @@ class DbManage:
                     nom_produit VARCHAR(255) NOT NULL,
                     prix INT NOT NULL,
                     modele VARCHAR(255) NOT NULL,
-                    reference VARCHAR(255) NOT NULL,
+                    reference INT NOT NULL,
                     quantitee INT NOT NULL,
                     PRIMARY KEY (reference)
                 )
