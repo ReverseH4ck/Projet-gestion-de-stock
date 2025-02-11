@@ -1,3 +1,8 @@
+import mysql.connector
+from mysql.connector import errorcode
+from base_de_donnees.database import creat_table
+
+
 class Article:
     def __init__(self, nom_article, reference, quantite, prix):
         self.nom_article = nom_article
@@ -6,27 +11,171 @@ class Article:
         self.prix = prix
 
     def __str__(self):
-        return f"{self.nom_article}\n (Réf: {self.reference})\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
+        return f"{self.nom_article}\n (Réf: {self.reference})\\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
 
 class ArticleManager:
-    def __init__(self):
-        self.articles = {}
+    def __init__(self, host, user, password, database):
+        try:
+            self.conn = mysql.connector.connect(
+                host=host,
+                user=user,
+                password=password,
+                database=database
+            )
+            self.cursor = self.conn.cursor()
+            self._init_db()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Erreur d'authentification : vérifiez votre utilisateur et mot de passe.")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("La base de données n'existe pas.")
+            else:
+                print(err)
+            exit(1)
 
-    def add(self, nom_article, reference, quantite, prix):
-        article = Article(nom_article, reference, quantite, prix)
-        if reference in self.articles:
+    creat_table(self)
+
+    def add_article(self):
+        """Ajoute un nouvel article dans la base de données."""
+        print("=== Ajout d'un article ===")
+        nom_article = input("Nom de l'article : ")
+        try:
+            reference = int(input("Entrez la référence de l'article (nombre entier) : "))
+            quantite = int(input("Entrez la quantité : "))
+            prix = int(input("Entrez le prix de l'article : "))
+        except ValueError:
+            print("Erreur : Veuillez saisir des nombres valides pour la référence, la quantité et le prix.")
+            return
+
+        # Vérifier si l'article existe déjà
+        self.cursor.execute("SELECT * FROM articles WHERE reference = %s", (reference,))
+        if self.cursor.fetchone() is not None:
             print("Erreur : Un article avec cette référence existe déjà.")
-        else:
-            self.articles[reference] = article
-            print(f"Article {nom_article}/{reference}, créé avec succès.")
+            return
 
-    def edition(self, reference, nouveau_nom=None, nouvelle_quantite=None, nouveau_prix=None):
-        if reference in self.articles:
-            article = self.articles[reference]
-            if nouveau_nom is None:
-                article.nom_article = nouveau_nom
-            if nouvelle_quantite is None:
-                article.quantite = nouvelle_quantite
-            if nouveau_prix is None:
-                article.prix = nouveau_prix
-            print(f"Article {reference} modifier avec succès.")
+        article = Article(nom_article, reference, quantite, prix)
+        try:
+            self.cursor.execute(
+                "INSERT INTO articles (reference, nom_article, quantite, prix) VALUES (%s, %s, %s, %s)",
+                (article.reference, article.nom_article, article.quantite, article.prix)
+            )
+            self.conn.commit()
+            print(f"Article {article.nom_article} (Réf: {article.reference}) ajouté avec succès.")
+        except mysql.connector.Error as err:
+            print("Erreur lors de l'insertion de l'article :", err)
+
+    def edit_article(self):
+        """Modifie un article existant dans la base de données."""
+        print("=== Modification d'un article ===")
+        try:
+            reference = int(input("Entrez la référence de l'article à modifier : "))
+        except ValueError:
+            print("Erreur : La référence doit être un nombre entier.")
+            return
+
+        self.cursor.execute("SELECT * FROM articles WHERE reference = %s", (reference,))
+        result = self.cursor.fetchone()
+        if result is None:
+            print("Erreur : Aucun article trouvé avec cette référence.")
+            return
+
+        # Affichage des valeurs actuelles
+        print("Article actuel:")
+        print(f"Nom: {result[1]}, Quantité: {result[2]}, Prix: {result[3]}€")
+
+        # Saisie des nouvelles valeurs (laisser vide pour conserver l'actuel)
+        new_nom = input("Nouveau nom (laisser vide pour conserver l'actuel): ")
+        new_quantite_input = input("Nouvelle quantité (laisser vide pour conserver l'actuelle): ")
+        new_prix_input = input("Nouveau prix (laisser vide pour conserver l'actuel): ")
+
+        new_nom = new_nom if new_nom.strip() != "" else result[1]
+        try:
+            new_quantite = int(new_quantite_input) if new_quantite_input.strip() != "" else result[2]
+            new_prix = int(new_prix_input) if new_prix_input.strip() != "" else result[3]
+        except ValueError:
+            print("Erreur : La quantité et le prix doivent être des nombres entiers.")
+            return
+
+        try:
+            self.cursor.execute(
+                "UPDATE articles SET nom_article = %s, quantite = %s, prix = %s WHERE reference = %s",
+                (new_nom, new_quantite, new_prix, reference)
+            )
+            self.conn.commit()
+            print(f"Article (Réf: {reference}) modifié avec succès.")
+        except mysql.connector.Error as err:
+            print("Erreur lors de la modification de l'article :", err)
+
+    def delete_article(self):
+        """Supprime un article de la base de données."""
+        print("=== Suppression d'un article ===")
+        try:
+            reference = int(input("Entrez la référence de l'article à supprimer : "))
+        except ValueError:
+            print("Erreur : La référence doit être un nombre entier.")
+            return
+
+        self.cursor.execute("SELECT * FROM articles WHERE reference = %s", (reference,))
+        if self.cursor.fetchone() is None:
+            print("Erreur : Aucun article trouvé avec cette référence.")
+            return
+
+        confirmation = input("Êtes-vous sûr de vouloir supprimer cet article ? (o/n): ")
+        if confirmation.lower() == "o":
+            try:
+                self.cursor.execute("DELETE FROM articles WHERE reference = %s", (reference,))
+                self.conn.commit()
+                print(f"Article (Réf: {reference}) supprimé avec succès.")
+            except mysql.connector.Error as err:
+                print("Erreur lors de la suppression de l'article :", err)
+        else:
+            print("Suppression annulée.")
+
+    def list_articles(self):
+        """Affiche tous les articles stockés dans la base de données."""
+        print("=== Liste des articles ===")
+        self.cursor.execute("SELECT * FROM articles")
+        articles = self.cursor.fetchall()
+        if articles:
+            for art in articles:
+                print(f"Réf: {art[0]}, Nom: {art[1]}, Quantité: {art[2]}, Prix: {art[3]}€")
+        else:
+            print("Aucun article trouvé.")
+
+    def close(self):
+        """Ferme la connexion à la base de données."""
+        self.cursor.close()
+        self.conn.close()
+
+if __name__ == '__main__':
+    # Demande des paramètres de connexion à MySQL
+    host = input("Entrez l'hôte MySQL (ex: localhost) : ")
+    user = input("Entrez l'utilisateur MySQL : ")
+    password = input("Entrez le mot de passe MySQL : ")
+    database = input("Entrez le nom de la base de données : ")
+
+    manager = ArticleManager(host, user, password, database)
+
+    while True:
+        print("\n=== Gestion des Articles ===")
+        print("1. Ajouter un article")
+        print("2. Modifier un article")
+        print("3. Supprimer un article")
+        print("4. Lister les articles")
+        print("5. Quitter")
+        choix = input("Votre choix : ")
+
+        if choix == "1":
+            manager.add_article()
+        elif choix == "2":
+            manager.edit_article()
+        elif choix == "3":
+            manager.delete_article()
+        elif choix == "4":
+            manager.list_articles()
+        elif choix == "5":
+            print("Fermeture du programme.")
+            manager.close()
+            break
+        else:
+            print("Choix non valide. Veuillez réessayer.")
