@@ -8,7 +8,7 @@ try:
         host="94.239.97.139",
         user="injectionsql",
         password="injectionsql",
-        database="articles"
+        database="injectionsql"
     )
     cursor = conn.cursor()
 except mysql.connector.Error as err:
