@@ -33,7 +33,7 @@ class ArticleManager:
                 print(err)
             exit(1)
 
-    creat_table(self)
+
 
     def add_article(self):
         """Ajoute un nouvel article dans la base de données."""
