@@ -1,6 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode
-import DatabaseUtils.base_de_donnees  # Importez votre classe
+import DatabaseUtils.base_de_donnees  # Importez la class
 
 
 try:
