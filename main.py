@@ -1,7 +1,10 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from tkinter import Tk
-from model import Model
-from view import View
-from controller import Controller
+from interface.model import Model
+from interface.view import View
+from interface.controller import Controller
 
 def main():
     window = Tk()
