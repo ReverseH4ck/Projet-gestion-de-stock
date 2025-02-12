@@ -1,6 +1,5 @@
 import mysql.connector
 from mysql.connector import errorcode
-from base_de_donnees.database import creat_table
 
 
 class Article:
@@ -37,7 +36,6 @@ class ArticleManager:
 
     def add_article(self):
         """Ajoute un nouvel article dans la base de données."""
-        print("=== Ajout d'un article ===")
         nom_article = input("Nom de l'article : ")
         try:
             reference = int(input("Entrez la référence de l'article (nombre entier) : "))
@@ -64,9 +62,9 @@ class ArticleManager:
         except mysql.connector.Error as err:
             print("Erreur lors de l'insertion de l'article :", err)
 
+
     def edit_article(self):
         """Modifie un article existant dans la base de données."""
-        print("=== Modification d'un article ===")
         try:
             reference = int(input("Entrez la référence de l'article à modifier : "))
         except ValueError:
@@ -106,6 +104,7 @@ class ArticleManager:
         except mysql.connector.Error as err:
             print("Erreur lors de la modification de l'article :", err)
 
+
     def delete_article(self):
         """Supprime un article de la base de données."""
         print("=== Suppression d'un article ===")
@@ -131,6 +130,7 @@ class ArticleManager:
         else:
             print("Suppression annulée.")
 
+
     def list_articles(self):
         """Affiche tous les articles stockés dans la base de données."""
         print("=== Liste des articles ===")
@@ -141,6 +141,7 @@ class ArticleManager:
                 print(f"Réf: {art[0]}, Nom: {art[1]}, Quantité: {art[2]}, Prix: {art[3]}€")
         else:
             print("Aucun article trouvé.")
+
 
     def close(self):
         """Ferme la connexion à la base de données."""
@@ -155,27 +156,3 @@ if __name__ == '__main__':
     database = input("Entrez le nom de la base de données : ")
 
     manager = ArticleManager(host, user, password, database)
-
-    while True:
-        print("\n=== Gestion des Articles ===")
-        print("1. Ajouter un article")
-        print("2. Modifier un article")
-        print("3. Supprimer un article")
-        print("4. Lister les articles")
-        print("5. Quitter")
-        choix = input("Votre choix : ")
-
-        if choix == "1":
-            manager.add_article()
-        elif choix == "2":
-            manager.edit_article()
-        elif choix == "3":
-            manager.delete_article()
-        elif choix == "4":
-            manager.list_articles()
-        elif choix == "5":
-            print("Fermeture du programme.")
-            manager.close()
-            break
-        else:
-            print("Choix non valide. Veuillez réessayer.")
