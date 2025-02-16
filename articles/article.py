@@ -1,5 +1,6 @@
 import mysql.connector
 from mysql.connector import errorcode
+import json
 
 
 class Article:
@@ -12,14 +13,21 @@ class Article:
     def __str__(self):
         return f"{self.nom_article}\n (Réf: {self.reference})\\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
 
+def load_config(filename='config.json'):
+    with open(filename, 'r') as file:
+        return json.load(file)
+
+config = load_config()
+
 class ArticleManager:
-    def __init__(self, host, user, password, database):
+    def __init__(self):
         try:
             self.conn = mysql.connector.connect(
-                host=host,
-                user=user,
-                password=password,
-                database=database
+                host=config['host'],
+                port=config['port'],
+                user=config['user'],
+                password=config['password'],
+                database=config['database']
             )
             self.cursor = self.conn.cursor()
             self._init_db()
