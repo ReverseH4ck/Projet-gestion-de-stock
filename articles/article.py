@@ -1,6 +1,7 @@
 import mysql.connector
 from mysql.connector import errorcode
 import json
+import os
 
 
 class Article:
@@ -14,7 +15,15 @@ class Article:
         return f"{self.nom_article}\n (Réf: {self.reference})\\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
 
 def load_config(filename='config.json'):
-    with open(filename, 'r') as file:
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(script_dir)
+    config_path = os.path.join(parent_dir, "config.json")
+
+    if not os.path.exists(config_path):
+        print(f"Erreur : Le fichier {config_path} est introuvable.")
+        exit(1)
+
+    with open(config_path, 'r') as file:
         return json.load(file)
 
 config = load_config()
@@ -157,10 +166,24 @@ class ArticleManager:
         self.conn.close()
 
 if __name__ == '__main__':
-    # Demande des paramètres de connexion à MySQL
-    host = input("Entrez l'hôte MySQL (ex: localhost) : ")
-    user = input("Entrez l'utilisateur MySQL : ")
-    password = input("Entrez le mot de passe MySQL : ")
-    database = input("Entrez le nom de la base de données : ")
+    config = load_config()
+    print("Configuration chargee : ", config)
 
-    manager = ArticleManager(host, user, password, database)
+    try:
+        connexion = mysql.connector.connect(
+            host=config["host"],
+            port=config["port"],
+            user=config["user"],
+            password=config["password"]
+        )
+        print("Connexion reussi a la base de donnees !")
+
+    except mysql.connector.Error as err:
+        # Gestion des erreurs spécifiques
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Erreur d'authentification : vérifiez votre utilisateur et mot de passe.")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("La base de données n'existe pas.")
+        else:
+            print("Erreur lors de la connexion :", err)
+        exit(1)
