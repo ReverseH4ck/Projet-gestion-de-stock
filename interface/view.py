@@ -33,7 +33,7 @@ class View:
         self.brapports = Button(self.frame_principal, text="📊 Rapports", font=("Impact", 20), bg='#c75402', fg='white')
         self.bquitter = Button(self.frame_principal, text="❌ Quitter", font=("Impact", 20), bg='#c75402', fg='white')
 
-        self.bproduits.pack(pady=25, fill=X)
+        self.bproduits.pack(pady=25, )
         self.bfournisseurs.pack(pady=25, fill=X)
         self.bventes.pack(pady=25, fill=X)
         self.brapports.pack(pady=25, fill=X)

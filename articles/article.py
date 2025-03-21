@@ -14,6 +14,42 @@ class Article:
     def __str__(self):
         return f"{self.nom_article}\n (Réf: {self.reference})\\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
 
+def load_config(filename='config.json'):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    parent_dir = os.path.dirname(script_dir)
+    config_path = os.path.join(parent_dir, "config.json")
+
+    if not os.path.exists(config_path):
+        print(f"Erreur : Le fichier {config_path} est introuvable.")
+        exit(1)
+
+    with open(config_path, 'r') as file:
+        return json.load(file)
+
+config = load_config()
+
+class ArticleManager:
+    def __init__(self):
+        try:
+            self.conn = mysql.connector.connect(
+                host=config['host'],
+                port=config['port'],
+                user=config['user'],
+                password=config['password'],
+                database=config['database']
+            )
+            self.cursor = self.conn.cursor()
+            self._init_db()
+        except mysql.connector.Error as err:
+            if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+                print("Erreur d'authentification : vérifiez votre utilisateur et mot de passe.")
+            elif err.errno == errorcode.ER_BAD_DB_ERROR:
+                print("La base de données n'existe pas.")
+            else:
+                print(err)
+            exit(1)
+
+
 
     def add_article(self):
         """Ajoute un nouvel article dans la base de données."""
@@ -129,4 +165,25 @@ class Article:
         self.cursor.close()
         self.conn.close()
 
-#if __name__ == '__main__':
+if __name__ == '__main__':
+    config = load_config()
+    print("Configuration chargee : ", config)
+
+    try:
+        connexion = mysql.connector.connect(
+            host=config["host"],
+            port=config["port"],
+            user=config["user"],
+            password=config["password"]
+        )
+        print("Connexion reussi a la base de donnees !")
+
+    except mysql.connector.Error as err:
+        # Gestion des erreurs spécifiques
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Erreur d'authentification : vérifiez votre utilisateur et mot de passe.")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("La base de données n'existe pas.")
+        else:
+            print("Erreur lors de la connexion :", err)
+        exit(1)

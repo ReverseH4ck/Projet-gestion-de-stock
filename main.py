@@ -6,6 +6,8 @@ from interface.model import Model
 from interface.view import View
 from interface.controller import Controller
 
+
+
 def main():
     window = Tk()
     model = Model()
