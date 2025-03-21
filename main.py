@@ -8,6 +8,9 @@ from interface.controller import Controller
 
 
 
+
+
+
 def main():
     window = Tk()
     model = Model()
