@@ -1,5 +1,5 @@
 from .model import Model
-from interface.view import View
+from Interface.view import View
 
 
 class Controller:
