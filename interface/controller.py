@@ -1,4 +1,4 @@
-# Contrôleur : fait le lien entre la vue (interface) et le modèle (données)
+# Contrôleur : relie la vue et le modèle
 
 from .model import Model
 from Interface.view import View
@@ -8,11 +8,9 @@ class Controller:
         self.model = model
         self.view = view
 
-        # Connexion des boutons aux fonctions
+        # Connexion des actions aux boutons
         self.view.set_action_buttons(self.ajouter_produit, self.modifier_produit, self.supprimer_produit, self.quitter_application)
         self.view.bproduits.config(command=self.view.switch_to_produits)
-
-        # Affichage initial sur la page d'accueil
         self.view.switch_to_principal()
 
     def ajouter_produit(self):

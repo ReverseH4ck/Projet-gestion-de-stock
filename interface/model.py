@@ -1,4 +1,4 @@
-# Modèle : contient les données et la logique métier
+# Modèle : gestion des données et logique métier
 
 class Model:
     def __init__(self):
