@@ -1,17 +1,20 @@
+# Modèle : contient les données et la logique métier
+
 class Model:
     def __init__(self):
-        self.produits = []  # Liste de produits (pour exemple)
+        # Liste qui stocke les produits
+        self.liste_produits = []
 
     def ajouter_produit(self, produit):
-        self.produits.append(produit)
+        self.liste_produits.append(produit)
+
+    def modifier_produit(self, index, nouveau_nom):
+        if 0 <= index < len(self.liste_produits):
+            self.liste_produits[index] = nouveau_nom
 
     def supprimer_produit(self, index):
-        if 0 <= index < len(self.produits):
-            self.produits.pop(index)
-
-    def modifier_produit(self, index, produit):
-        if 0 <= index < len(self.produits):
-            self.produits[index] = produit
+        if 0 <= index < len(self.liste_produits):
+            del self.liste_produits[index]
 
     def get_produits(self):
-        return self.produits
+        return self.liste_produits
