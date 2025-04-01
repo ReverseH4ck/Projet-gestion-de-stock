@@ -20,8 +20,16 @@ class Model:
         return self.liste_produits
 
     def ajouter_fournisseur(self, nom):
-        if nom not in self.liste_fournisseurs:
+        if nom.strip() and nom not in self.liste_fournisseurs:
             self.liste_fournisseurs.append(nom)
+
+    def modifier_fournisseur(self, index, nouveau_nom):
+        if 0 <= index < len(self.liste_fournisseurs):
+            self.liste_fournisseurs[index] = nouveau_nom
+
+    def supprimer_fournisseur(self, index):
+        if 0 <= index < len(self.liste_fournisseurs):
+            del self.liste_fournisseurs[index]
 
     def get_fournisseurs(self):
         return self.liste_fournisseurs

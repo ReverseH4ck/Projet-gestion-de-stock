@@ -1,5 +1,3 @@
-# Vue : interface graphique en tkinter
-
 from tkinter import *
 
 class View:
@@ -11,6 +9,7 @@ class View:
         self.window.minsize(480, 360)
 
         self.selected_index = None
+        self.selected_fournisseur_index = None
 
         self.frame_menu = Frame(window, bg='#1e1e1e')
         self.frame_menu.pack(side=LEFT, anchor=N, padx=30)
@@ -69,8 +68,15 @@ class View:
 
         self.entry_nouveau_fournisseur = Entry(self.frame_fournisseur, font=("Courier", 14), bg="#34495e", fg="white", relief=FLAT)
         self.entry_nouveau_fournisseur.pack(pady=10, ipadx=200, ipady=10)
-        self.bajouter_fournisseur = Button(self.frame_fournisseur, text="+ Ajouter Fournisseur", font=("Impact", 16), bg='#27ae60', fg='white', relief=FLAT)
-        self.bajouter_fournisseur.pack(pady=20)
+
+        self.frame_btns_fournisseur = Frame(self.frame_fournisseur, bg='#1e1e1e')
+        self.frame_btns_fournisseur.pack(pady=10)
+        self.bajouter_fournisseur = Button(self.frame_btns_fournisseur, text="+ Ajouter", font=("Impact", 14), bg='#27ae60', fg='white', relief=FLAT, padx=20)
+        self.bmodifier_fournisseur = Button(self.frame_btns_fournisseur, text="✏️ Modifier", font=("Impact", 14), bg='#f39c12', fg='white', relief=FLAT, padx=20)
+        self.bsupprimer_fournisseur = Button(self.frame_btns_fournisseur, text="🗑️ Supprimer", font=("Impact", 14), bg='#e74c3c', fg='white', relief=FLAT, padx=20)
+        self.bajouter_fournisseur.grid(row=0, column=0, padx=10)
+        self.bmodifier_fournisseur.grid(row=0, column=1, padx=10)
+        self.bsupprimer_fournisseur.grid(row=0, column=2, padx=10)
 
         for btn in [self.bajouter, self.bmodifier, self.bsupprimer, self.bmenu]:
             self.apply_button_hover_animation(btn)
@@ -95,8 +101,22 @@ class View:
         for widget in self.sidebar_fournisseur.winfo_children():
             widget.destroy()
         Label(self.sidebar_fournisseur, text="Fournisseurs :", font=("Impact", 16), bg="#2c3e50", fg="white").pack(pady=5)
-        for nom in fournisseurs:
-            Label(self.sidebar_fournisseur, text=nom, font=("Courier", 14), bg="#2c3e50", fg="white").pack(pady=2, anchor=W, padx=10)
+        for index, nom in enumerate(fournisseurs):
+            bg_color = "#1abc9c" if index == self.selected_fournisseur_index else "#2c3e50"
+            label = Label(self.sidebar_fournisseur, text=nom, font=("Courier", 14), bg=bg_color, fg="white")
+            label.pack(pady=2, anchor=W, padx=10, fill=X)
+            label.bind("<Button-1>", lambda e, i=index: self.selectionner_fournisseur(i))
+
+    def selectionner_fournisseur(self, index):
+        self.selected_fournisseur_index = index
+        fournisseurs = self.sidebar_fournisseur.master.master.controller.model.get_fournisseurs()
+        if 0 <= index < len(fournisseurs):
+            self.entry_nouveau_fournisseur.delete(0, END)
+            self.entry_nouveau_fournisseur.insert(0, fournisseurs[index])
+        self.afficher_liste_fournisseurs(fournisseurs)
+
+    def get_selected_fournisseur_index(self):
+        return self.selected_fournisseur_index
 
     def get_input_produit(self):
         return self.champ_texte.get()
@@ -118,8 +138,10 @@ class View:
         self.bsupprimer.config(command=supprimer)
         self.bquitter.config(command=quitter)
 
-    def set_action_fournisseur(self, ajout_fournisseur):
-        self.bajouter_fournisseur.config(command=ajout_fournisseur)
+    def set_action_fournisseur(self, ajout, modifier, supprimer):
+        self.bajouter_fournisseur.config(command=ajout)
+        self.bmodifier_fournisseur.config(command=modifier)
+        self.bsupprimer_fournisseur.config(command=supprimer)
 
     def get_nouveau_fournisseur(self):
         return self.entry_nouveau_fournisseur.get()

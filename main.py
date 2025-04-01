@@ -2,9 +2,9 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 from tkinter import Tk
-from Interface.model import Model
-from Interface.view import View
-from Interface.controller import Controller
+from interface.model import Model
+from interface.view import View
+from interface.controller import Controller
 
 
 
