@@ -2,8 +2,8 @@
 
 class Model:
     def __init__(self):
-        # Liste qui stocke les produits
         self.liste_produits = []
+        self.liste_fournisseurs = []
 
     def ajouter_produit(self, produit):
         self.liste_produits.append(produit)
@@ -18,3 +18,10 @@ class Model:
 
     def get_produits(self):
         return self.liste_produits
+
+    def ajouter_fournisseur(self, nom):
+        if nom not in self.liste_fournisseurs:
+            self.liste_fournisseurs.append(nom)
+
+    def get_fournisseurs(self):
+        return self.liste_fournisseurs
