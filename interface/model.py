@@ -1,5 +1,6 @@
 
 from article import ArticleManager, Article, FournisseurManager, Fournisseur
+import pandas as pd
 
 class Model:
     def __init__(self):
@@ -30,7 +31,9 @@ class Model:
         articles = self.article_manager.cursor.fetchall()
         return [Article(nom, ref, qte, prix) for ref, nom, qte, prix in articles]
 
-    # Fournisseurs en base de données
+    def get_fournisseurs(self):
+        return self.fournisseur_manager.get_all()
+
     def ajouter_fournisseur(self, nom):
         self.fournisseur_manager.add(nom)
 
@@ -40,5 +43,18 @@ class Model:
     def supprimer_fournisseur(self, id):
         self.fournisseur_manager.delete(id)
 
-    def get_fournisseurs(self):
-        return self.fournisseur_manager.get_all()
+    def exporter_donnees(self, chemin):
+        self.article_manager.cursor.execute("SELECT reference, nom_article, quantite, prix FROM articles")
+        produits = self.article_manager.cursor.fetchall()
+        df_produits = pd.DataFrame(produits, columns=["Référence", "Nom", "Quantité", "Prix"])
+
+        self.article_manager.cursor.execute("SELECT id, nom FROM fournisseurs")
+        fournisseurs = self.article_manager.cursor.fetchall()
+        df_fournisseurs = pd.DataFrame(fournisseurs, columns=["ID", "Nom"])
+
+        df_ventes = pd.DataFrame(columns=["(Aucune vente enregistrée)"])
+
+        with pd.ExcelWriter(chemin, engine='xlsxwriter') as writer:
+            df_produits.to_excel(writer, sheet_name="Produits", index=False)
+            df_fournisseurs.to_excel(writer, sheet_name="Fournisseurs", index=False)
+            df_ventes.to_excel(writer, sheet_name="Ventes", index=False)

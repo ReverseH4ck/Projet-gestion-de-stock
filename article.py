@@ -5,7 +5,7 @@ import os
 
 
 class Article:
-    def __init__(self, nom_article, reference, quantite, prix):
+    def __init__(self, nom_article, reference, quantite, prix, id_fournisseur=None):
         self.nom_article = nom_article
         self.reference = reference
         self.quantite = quantite

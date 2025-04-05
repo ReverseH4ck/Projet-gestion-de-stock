@@ -1,14 +1,18 @@
 
 from interface.model import Model
+from tkinter import filedialog, messagebox
 
 class Controller:
     def __init__(self, model, view):
         self.model = model
         self.view = view
+
         self.view.set_action_buttons(self.ajouter_produit, self.modifier_produit, self.supprimer_produit)
         self.view.bproduits.config(command=self.view.switch_to_produits)
+        self.view.brapports.config(command=self.view.switch_to_rapports)
+        self.view.bexporter.config(command=self.exporter_rapport)
 
-        self.view.bfournisseurs.config(command=self.afficher_fournisseurs)
+        self.view.bfournisseurs.config(command=self.view.switch_to_fournisseurs)
         self.view.bajouter_fournisseur.config(command=self.ajouter_fournisseur)
         self.view.bmodifier_fournisseur.config(command=self.modifier_fournisseur)
         self.view.bsupprimer_fournisseur.config(command=self.supprimer_fournisseur)
@@ -62,7 +66,6 @@ class Controller:
     def rafraichir_produits(self):
         self.view.afficher_produits(self.model.get_produits())
 
-    # --- FOURNISSEURS ---
     def afficher_fournisseurs(self):
         self.view.switch_to_fournisseurs()
         self.rafraichir_fournisseurs()
@@ -95,3 +98,16 @@ class Controller:
             self.view.entry_fournisseur.delete(0, 'end')
             self.view.selected_fournisseur_index = None
             self.rafraichir_fournisseurs()
+
+    def exporter_rapport(self):
+        chemin = filedialog.asksaveasfilename(
+            defaultextension=".xlsx",
+            filetypes=[("Fichier Excel", "*.xlsx")],
+            title="Enregistrer le rapport"
+        )
+        if chemin:
+            try:
+                self.model.exporter_donnees(chemin)
+                messagebox.showinfo("Export réussi", f"Le rapport a été exporté vers :\n{chemin}")
+            except Exception as e:
+                messagebox.showerror("Erreur", f"Erreur lors de l'export : {e}")
