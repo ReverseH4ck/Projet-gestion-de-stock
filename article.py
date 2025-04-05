@@ -12,12 +12,11 @@ class Article:
         self.prix = prix
 
     def __str__(self):
-        return f"{self.nom_article}\n (Réf: {self.reference})\\ - Quantité: {self.quantite}\n, Prix: {self.prix}€"
+        return f"{self.nom_article}\n (Réf: {self.reference}) - Quantité: {self.quantite}, Prix: {self.prix}€"
 
 def load_config(filename='config.json'):
     script_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.dirname(script_dir)
-    config_path = os.path.join(parent_dir, "config.json")
+    config_path = os.path.join(script_dir, filename)
 
     if not os.path.exists(config_path):
         print(f"Erreur : Le fichier {config_path} est introuvable.")
@@ -49,10 +48,21 @@ class ArticleManager:
                 print(err)
             exit(1)
 
-
+    def _init_db(self):
+        try:
+            self.cursor.execute("""
+                CREATE TABLE IF NOT EXISTS articles (
+                    reference INT PRIMARY KEY,
+                    nom_article VARCHAR(255) NOT NULL,
+                    quantite INT DEFAULT 0,
+                    prix FLOAT DEFAULT 0
+                )
+            """)
+            self.conn.commit()
+        except mysql.connector.Error as err:
+            print("Erreur lors de la création de la table :", err)
 
     def add_article(self):
-        """Ajoute un nouvel article dans la base de données."""
         nom_article = input("Nom de l'article : ")
         try:
             reference = int(input("Entrez la référence de l'article (nombre entier) : "))
@@ -62,7 +72,6 @@ class ArticleManager:
             print("Erreur : Veuillez saisir des nombres valides pour la référence, la quantité et le prix.")
             return
 
-        # Vérifier si l'article existe déjà
         self.cursor.execute("SELECT * FROM articles WHERE reference = %s", (reference,))
         if self.cursor.fetchone() is not None:
             print("Erreur : Un article avec cette référence existe déjà.")
@@ -79,9 +88,7 @@ class ArticleManager:
         except mysql.connector.Error as err:
             print("Erreur lors de l'insertion de l'article :", err)
 
-
     def edit_article(self):
-        """Modifie un article existant dans la base de données."""
         try:
             reference = int(input("Entrez la référence de l'article à modifier : "))
         except ValueError:
@@ -94,11 +101,9 @@ class ArticleManager:
             print("Erreur : Aucun article trouvé avec cette référence.")
             return
 
-        # Affichage des valeurs actuelles
         print("Article actuel:")
         print(f"Nom: {result[1]}, Quantité: {result[2]}, Prix: {result[3]}€")
 
-        # Saisie des nouvelles valeurs (laisser vide pour conserver l'actuel)
         new_nom = input("Nouveau nom (laisser vide pour conserver l'actuel): ")
         new_quantite_input = input("Nouvelle quantité (laisser vide pour conserver l'actuelle): ")
         new_prix_input = input("Nouveau prix (laisser vide pour conserver l'actuel): ")
@@ -121,10 +126,7 @@ class ArticleManager:
         except mysql.connector.Error as err:
             print("Erreur lors de la modification de l'article :", err)
 
-
     def delete_article(self):
-        """Supprime un article de la base de données."""
-        print("=== Suppression d'un article ===")
         try:
             reference = int(input("Entrez la référence de l'article à supprimer : "))
         except ValueError:
@@ -147,9 +149,7 @@ class ArticleManager:
         else:
             print("Suppression annulée.")
 
-
     def list_articles(self):
-        """Affiche tous les articles stockés dans la base de données."""
         print("=== Liste des articles ===")
         self.cursor.execute("SELECT * FROM articles")
         articles = self.cursor.fetchall()
@@ -159,15 +159,13 @@ class ArticleManager:
         else:
             print("Aucun article trouvé.")
 
-
     def close(self):
-        """Ferme la connexion à la base de données."""
         self.cursor.close()
         self.conn.close()
 
 if __name__ == '__main__':
     config = load_config()
-    print("Configuration chargee : ", config)
+    print("Configuration chargée :", config)
 
     try:
         connexion = mysql.connector.connect(
@@ -176,10 +174,9 @@ if __name__ == '__main__':
             user=config["user"],
             password=config["password"]
         )
-        print("Connexion reussi a la base de donnees !")
+        print("Connexion réussie à la base de données !")
 
     except mysql.connector.Error as err:
-        # Gestion des erreurs spécifiques
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
             print("Erreur d'authentification : vérifiez votre utilisateur et mot de passe.")
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
@@ -187,3 +184,52 @@ if __name__ == '__main__':
         else:
             print("Erreur lors de la connexion :", err)
         exit(1)
+
+class Fournisseur:
+    def __init__(self, id, nom):
+        self.id = id
+        self.nom = nom
+
+    def __str__(self):
+        return self.nom
+
+
+        self.id = id
+        self.nom = nom
+
+class FournisseurManager:
+    def __init__(self, conn):
+        self.conn = conn
+        self.cursor = conn.cursor()
+        self._init_db()
+
+    def _init_db(self):
+        self.cursor.execute("""
+            CREATE TABLE IF NOT EXISTS fournisseurs (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                nom VARCHAR(255) NOT NULL UNIQUE
+            )
+        """)
+        self.conn.commit()
+
+    def get_all(self):
+        self.cursor.execute("SELECT id, nom FROM fournisseurs")
+        rows = self.cursor.fetchall()
+        return [Fournisseur(id, nom) for id, nom in rows]
+
+    
+    def add(self, nom):
+        try:
+            self.cursor.execute("INSERT INTO fournisseurs (nom) VALUES (%s)", (nom,))
+            self.conn.commit()
+        except mysql.connector.IntegrityError as e:
+            print(f"Erreur : Le fournisseur '{nom}' existe déjà.")
+        self.conn.commit()
+
+    def update(self, id, nouveau_nom):
+        self.cursor.execute("UPDATE fournisseurs SET nom = %s WHERE id = %s", (nouveau_nom, id))
+        self.conn.commit()
+
+    def delete(self, id):
+        self.cursor.execute("DELETE FROM fournisseurs WHERE id = %s", (id,))
+        self.conn.commit()
