@@ -3,6 +3,7 @@ from tkinter import *
 
 class View:
     def __init__(self, window):
+        self.controller = None
         self.window = window
         self.window.title("Gestion de Stock")
         self.window.geometry("1280x720")

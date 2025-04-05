@@ -5,11 +5,9 @@ class Controller:
     def __init__(self, model, view):
         self.model = model
         self.view = view
-
         self.view.set_action_buttons(self.ajouter_produit, self.modifier_produit, self.supprimer_produit)
         self.view.bproduits.config(command=self.view.switch_to_produits)
 
-        # Fournisseurs
         self.view.bfournisseurs.config(command=self.afficher_fournisseurs)
         self.view.bajouter_fournisseur.config(command=self.ajouter_fournisseur)
         self.view.bmodifier_fournisseur.config(command=self.modifier_fournisseur)
@@ -18,7 +16,6 @@ class Controller:
         self.rafraichir_produits()
         self.rafraichir_fournisseurs()
 
-    # --- PRODUITS ---
     def ajouter_produit(self):
         data = self.view.get_input_produit()
         try:
@@ -84,13 +81,17 @@ class Controller:
         index = self.view.get_selected_fournisseur_index()
         nouveau_nom = self.view.entry_fournisseur.get()
         if index is not None and nouveau_nom.strip():
-            self.model.modifier_fournisseur(index, nouveau_nom)
+            fournisseur = self.model.get_fournisseurs()[index]
+            self.model.modifier_fournisseur(fournisseur.id, nouveau_nom)
             self.view.entry_fournisseur.delete(0, 'end')
+            self.view.selected_fournisseur_index = None
             self.rafraichir_fournisseurs()
 
     def supprimer_fournisseur(self):
         index = self.view.get_selected_fournisseur_index()
         if index is not None:
-            self.model.supprimer_fournisseur(index)
+            fournisseur = self.model.get_fournisseurs()[index]
+            self.model.supprimer_fournisseur(fournisseur.id)
             self.view.entry_fournisseur.delete(0, 'end')
+            self.view.selected_fournisseur_index = None
             self.rafraichir_fournisseurs()

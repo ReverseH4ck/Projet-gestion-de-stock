@@ -1,21 +1,14 @@
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.dirname(__file__)))
-from tkinter import Tk
 from interface.model import Model
 from interface.view import View
 from interface.controller import Controller
-
-
-
-
-
+from tkinter import Tk
 
 def main():
     window = Tk()
     model = Model()
     view = View(window)
     controller = Controller(model, view)
+    view.set_controller(controller)  # ← C’est ici que ça lie la view au controller
     window.mainloop()
 
 if __name__ == "__main__":
