@@ -58,3 +58,22 @@ class Model:
             df_produits.to_excel(writer, sheet_name="Produits", index=False)
             df_fournisseurs.to_excel(writer, sheet_name="Fournisseurs", index=False)
             df_ventes.to_excel(writer, sheet_name="Ventes", index=False)
+
+
+    def effectuer_vente(self, reference, quantite_vendue):
+        self.article_manager.cursor.execute(
+            "SELECT quantite FROM articles WHERE reference = %s", (reference,)
+        )
+        result = self.article_manager.cursor.fetchone()
+        if result:
+            nouvelle_quantite = result[0] - quantite_vendue
+            if nouvelle_quantite < 0:
+                raise ValueError("Stock insuffisant pour cette vente.")
+            self.article_manager.cursor.execute(
+                "UPDATE articles SET quantite = %s WHERE reference = %s",
+                (nouvelle_quantite, reference)
+            )
+            self.article_manager.conn.commit()
+        else:
+            raise ValueError("Article non trouvé pour cette référence.")
+    

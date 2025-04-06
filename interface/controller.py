@@ -11,6 +11,7 @@ class Controller:
         self.view.bproduits.config(command=self.view.switch_to_produits)
         self.view.brapports.config(command=self.view.switch_to_rapports)
         self.view.bexporter.config(command=self.exporter_rapport)
+        self.view.bvalider_vente.config(command=self.valider_vente)
 
         self.view.bfournisseurs.config(command=self.view.switch_to_fournisseurs)
         self.view.bajouter_fournisseur.config(command=self.ajouter_fournisseur)
@@ -111,3 +112,30 @@ class Controller:
                 messagebox.showinfo("Export réussi", f"Le rapport a été exporté vers :\n{chemin}")
             except Exception as e:
                 messagebox.showerror("Erreur", f"Erreur lors de l'export : {e}")
+
+
+    def valider_vente(self):
+        saisie = self.view.entry_qte_vendue.get().strip()
+        try:
+            if " - " not in saisie:
+                raise ValueError("Format invalide. Utilisez : nom_produit - quantité")
+            nom_produit, quantite_str = saisie.split(" - ")
+            quantite_vendue = int(quantite_str.strip())
+
+            if quantite_vendue <= 0:
+                raise ValueError("Quantité invalide")
+
+            produits = self.model.get_produits()
+            produit = next((p for p in produits if p.nom_article.lower() == nom_produit.lower()), None)
+
+            if not produit:
+                print("Produit non trouvé :", nom_produit)
+                return
+
+            self.model.effectuer_vente(produit.reference, quantite_vendue)
+            print(f"Vente de {quantite_vendue} unités du produit {produit.nom_article} enregistrée.")
+            self.rafraichir_produits()
+        except ValueError as e:
+            print(f"Erreur : {e}")
+
+    
