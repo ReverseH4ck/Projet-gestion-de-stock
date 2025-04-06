@@ -4,7 +4,7 @@ import json
 class DatabaseUtils:
     def __init__(self):
         # Chargement automatique de config.json
-        with open("config.json", "r") as f:
+        with open("../config.json", "r") as f:
             config = json.load(f)
 
             self.conn = mysql.connector.connect(
