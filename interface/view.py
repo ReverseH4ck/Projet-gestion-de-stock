@@ -14,7 +14,7 @@ class View:
 
         # Frames principales
         self.frame_menu = Frame(window, bg='#1e1e1e')
-        self.frame_menu.pack(side=LEFT, fill=Y)
+        self.frame_menu.pack(side=TOP, fill=X)
 
         self.frame_principal = Frame(window, bg='#1e1e1e')
         self.frame_produit = Frame(window, bg='#1e1e1e')
@@ -25,37 +25,37 @@ class View:
         self.frame_principal.pack(expand=YES, fill=BOTH)
 
         # Menu boutons
-        self.baccueil = Button(self.frame_menu, text="🏠 Accueil", bg='#2980b9', fg='white', command=self.switch_to_principal)
-        self.bproduits = Button(self.frame_menu, text="📦 Produits", bg='#2980b9', fg='white', command=self.switch_to_produits)
-        self.bfournisseurs = Button(self.frame_menu, text="🚚 Fournisseurs", bg='#2980b9', fg='white', command=self.switch_to_fournisseurs)
-        self.bventes = Button(self.frame_menu, text="🛒 Ventes", bg='#2980b9', fg='white', command=self.switch_to_ventes)
-        self.brapports = Button(self.frame_menu, text="📊 Rapports", bg='#2980b9', fg='white', command=self.switch_to_rapports)
-        self.bquitter = Button(self.frame_menu, text="❌ Quitter", bg='#e74c3c', fg='white', command=self.window.quit)
+        self.baccueil = Button(self.frame_menu, text="🏠 Accueil", bg='#2980b9', fg='white', command=self.switch_to_principal, height = 2, width = 30 ,font=("Impact", 15) )
+        self.bproduits = Button(self.frame_menu, text="📦 Produits", bg='#2980b9', fg='white', command=self.switch_to_produits, height = 2, width = 30, font=("Impact", 15) )
+        self.bfournisseurs = Button(self.frame_menu, text="🚚 Fournisseurs", bg='#2980b9', fg='white', command=self.switch_to_fournisseurs, height = 2, width = 30, font=("Impact", 15))
+        self.bventes = Button(self.frame_menu, text="🛒 Ventes", bg='#2980b9', fg='white', command=self.switch_to_ventes, height = 2, width = 30, font=("Impact", 15))
+        self.brapports = Button(self.frame_menu, text="📊 Rapports", bg='#2980b9', fg='white', command=self.switch_to_rapports, height = 2, width = 30, font=("Impact", 15))
+        self.bquitter = Button(self.frame_menu, text="❌ Quitter", bg='#e74c3c', fg='white', command=self.window.quit, height = 2, width = 30, font=("Impact", 15))
 
         for b in [self.baccueil, self.bproduits, self.bfournisseurs, self.bventes, self.brapports, self.bquitter]:
-            b.pack(pady=10, fill=X)
+            b.pack(side=LEFT, padx=10, pady=20)
 
         # Accueil
-        self.label_accueil = Label(self.frame_principal, text="Bienvenue dans StockPilot", font=("Impact", 20), fg='white', bg='#1e1e1e')
+        self.label_accueil = Label(self.frame_principal, text="Bienvenue dans StockPilot", font=("Impact", 50), fg='white', bg='#1e1e1e')
         self.label_accueil.pack(pady=20)
 
         # Produits
-        self.label_titre_produits = Label(self.frame_produit, text="Gestion des Produits", font=("Impact", 30), bg='#1e1e1e', fg='white')
+        self.label_titre_produits = Label(self.frame_produit, text="Gestion des Produits", font=("Impact", 50), bg='#1e1e1e', fg='white')
         self.label_titre_produits.pack(pady=20)
         self._produits_ui()
 
         # Fournisseurs
-        self.label_titre_fournisseurs = Label(self.frame_fournisseur, text="Fournisseurs", font=("Impact", 30), bg='#1e1e1e', fg='white')
+        self.label_titre_fournisseurs = Label(self.frame_fournisseur, text="Fournisseurs", font=("Impact", 50), bg='#1e1e1e', fg='white')
         self.label_titre_fournisseurs.pack(pady=20)
         self._fournisseurs_ui()
 
         # Ventes
-        self.label_titre_ventes = Label(self.frame_ventes, text="Module Ventes", font=("Impact", 30), bg='#1e1e1e', fg='white')
+        self.label_titre_ventes = Label(self.frame_ventes, text="Module Ventes", font=("Impact", 50), bg='#1e1e1e', fg='white')
         self.label_titre_ventes.pack(pady=20)
         self._ventes_ui()
 
         # Rapports
-        self.label_titre_rapports = Label(self.frame_rapports, text="Module Rapports", font=("Impact", 30), bg='#1e1e1e', fg='white')
+        self.label_titre_rapports = Label(self.frame_rapports, text="Module Rapports", font=("Impact", 50), bg='#1e1e1e', fg='white')
         self.label_titre_rapports.pack(pady=20)
         self._rapports_ui()
 
@@ -68,20 +68,20 @@ class View:
         self.entry_quantite = Entry(self.frame_form, width=30)
         self.entry_prix = Entry(self.frame_form, width=30)
 
-        Label(self.frame_form, text="Nom", bg='#1e1e1e', fg='white').grid(row=0, column=0)
+        Label(self.frame_form, font=("Impact", 15), text="Nom", bg='#1e1e1e', fg='white').grid(row=0, column=0)
         self.entry_nom.grid(row=0, column=1, padx=10, pady=5)
-        Label(self.frame_form, text="Référence", bg='#1e1e1e', fg='white').grid(row=1, column=0)
+        Label(self.frame_form,font=("Impact", 15), text="Référence", bg='#1e1e1e', fg='white').grid(row=1, column=0)
         self.entry_reference.grid(row=1, column=1, padx=10, pady=5)
-        Label(self.frame_form, text="Quantité", bg='#1e1e1e', fg='white').grid(row=2, column=0)
+        Label(self.frame_form,font=("Impact", 15), text="Quantité", bg='#1e1e1e', fg='white').grid(row=2, column=0)
         self.entry_quantite.grid(row=2, column=1, padx=10, pady=5)
-        Label(self.frame_form, text="Prix", bg='#1e1e1e', fg='white').grid(row=3, column=0)
+        Label(self.frame_form,font=("Impact", 15), text="Prix", bg='#1e1e1e', fg='white').grid(row=3, column=0)
         self.entry_prix.grid(row=3, column=1, padx=10, pady=5)
 
         self.frame_btns = Frame(self.frame_produit, bg='#1e1e1e')
-        self.frame_btns.pack(pady=10)
-        self.bajouter = Button(self.frame_btns, text="Ajouter", bg='#27ae60', fg='white')
-        self.bmodifier = Button(self.frame_btns, text="Modifier", bg='#f39c12', fg='white')
-        self.bsupprimer = Button(self.frame_btns, text="Supprimer", bg='#c0392b', fg='white')
+        self.frame_btns.pack(pady=10 ,anchor=CENTER)
+        self.bajouter = Button(self.frame_btns, font=("Impact", 15), text="Ajouter", bg='#27ae60', fg='white')
+        self.bmodifier = Button(self.frame_btns,font=("Impact", 15), text="Modifier", bg='#f39c12', fg='white')
+        self.bsupprimer = Button(self.frame_btns,font=("Impact", 15), text="Supprimer", bg='#c0392b', fg='white')
         self.bajouter.grid(row=0, column=0, padx=10)
         self.bmodifier.grid(row=0, column=1, padx=10)
         self.bsupprimer.grid(row=0, column=2, padx=10)
@@ -91,10 +91,10 @@ class View:
 
     def _fournisseurs_ui(self):
         self.entry_fournisseur = Entry(self.frame_fournisseur, width=50)
-        self.entry_fournisseur.pack(pady=10)
-        self.bajouter_fournisseur = Button(self.frame_fournisseur, text="Ajouter Fournisseur", bg='#27ae60', fg='white')
-        self.bmodifier_fournisseur = Button(self.frame_fournisseur, text="Modifier Fournisseur", bg='#f39c12', fg='white')
-        self.bsupprimer_fournisseur = Button(self.frame_fournisseur, text="Supprimer Fournisseur", bg='#c0392b', fg='white')
+        self.entry_fournisseur.pack(padx=20)
+        self.bajouter_fournisseur = Button(self.frame_fournisseur,font=("Impact", 15), text="Ajouter Fournisseur", bg='#27ae60', fg='white')
+        self.bmodifier_fournisseur = Button(self.frame_fournisseur,font=("Impact", 15), text="Modifier Fournisseur", bg='#f39c12', fg='white')
+        self.bsupprimer_fournisseur = Button(self.frame_fournisseur,font=("Impact", 15), text="Supprimer Fournisseur", bg='#c0392b', fg='white')
         self.bajouter_fournisseur.pack(pady=5)
         self.bmodifier_fournisseur.pack(pady=5)
         self.bsupprimer_fournisseur.pack(pady=5)
@@ -108,9 +108,9 @@ class View:
         self.bvalider_vente.pack(pady=5)
 
     def _rapports_ui(self):
-        self.label_rapport = Label(self.frame_rapports, text="État du stock affiché ici", font=("Courier", 14), bg='#1e1e1e', fg='white')
+        self.label_rapport = Label(self.frame_rapports, text="Exportation du Rapport", font=("Courier", 14), bg='#1e1e1e', fg='white')
         self.label_rapport.pack(pady=10)
-        self.bexporter = Button(self.frame_rapports, text="Exporter", bg='#3498db', fg='white')
+        self.bexporter = Button(self.frame_rapports, font=("Impact", 20), text="Exporter", bg='#3498db', fg='white')
         self.bexporter.pack(pady=5)
 
     def switch_to_principal(self):
