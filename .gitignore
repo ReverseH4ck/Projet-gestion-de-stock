@@ -171,5 +171,5 @@ cython_debug/
 .pypirc
 
 # Specific ReverseH4ck files (added manually)
-config.json
+base_de_donnees/config.json
 
