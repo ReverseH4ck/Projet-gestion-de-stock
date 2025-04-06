@@ -35,7 +35,7 @@ class ArticleManager:
                 port=config['port'],
                 user=config['user'],
                 password=config['password'],
-                database=config['database']
+                database=config['name']
             )
             self.cursor = self.conn.cursor()
             self._init_db()
