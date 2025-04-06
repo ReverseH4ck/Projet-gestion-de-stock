@@ -5,7 +5,7 @@ class View:
     def __init__(self, window):
         self.controller = None
         self.window = window
-        self.window.title("Gestion de Stock")
+        self.window.title("StockPilot")
         self.window.geometry("1280x720")
         self.window.config(bg='#1e1e1e')
 
@@ -36,7 +36,7 @@ class View:
             b.pack(pady=10, fill=X)
 
         # Accueil
-        self.label_accueil = Label(self.frame_principal, text="Bienvenue dans l'application de gestion de stock", font=("Impact", 20), fg='white', bg='#1e1e1e')
+        self.label_accueil = Label(self.frame_principal, text="Bienvenue dans StockPilot", font=("Impact", 20), fg='white', bg='#1e1e1e')
         self.label_accueil.pack(pady=20)
 
         # Produits
