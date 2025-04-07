@@ -6,7 +6,7 @@ class View:
     def __init__(self, window):
         self.controller = None
         self.window = window
-        self.window.title("StockPilot")
+        self.window.title("ReverseH4ck ")
         self.window.geometry("1280x720")
         self.window.config(bg='#1e1e1e')
 
@@ -39,7 +39,7 @@ class View:
             b.pack(side=LEFT, padx=10, pady=20)
 
         # Accueil
-        self.label_accueil = Label(self.frame_principal, text="Bienvenue dans StockPilot", font=("Impact", 50), fg='white', bg='#1e1e1e')
+        self.label_accueil = Label(self.frame_principal, text="Bienvenue sur ReverseH4ck ", font=("Impact", 50), fg='white', bg='#1e1e1e')
         self.label_accueil.pack(pady=20)
 
         # Produits
