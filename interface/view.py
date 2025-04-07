@@ -1,5 +1,6 @@
 
 from tkinter import *
+import webbrowser
 
 class View:
     def __init__(self, window):
@@ -25,14 +26,16 @@ class View:
         self.frame_principal.pack(expand=YES, fill=BOTH)
 
         # Menu boutons
-        self.baccueil = Button(self.frame_menu, text="🏠 Accueil", bg='#2980b9', fg='white', command=self.switch_to_principal, height = 2, width = 30 ,font=("Impact", 15) )
-        self.bproduits = Button(self.frame_menu, text="📦 Produits", bg='#2980b9', fg='white', command=self.switch_to_produits, height = 2, width = 30, font=("Impact", 15) )
-        self.bfournisseurs = Button(self.frame_menu, text="🚚 Fournisseurs", bg='#2980b9', fg='white', command=self.switch_to_fournisseurs, height = 2, width = 30, font=("Impact", 15))
-        self.bventes = Button(self.frame_menu, text="🛒 Ventes", bg='#2980b9', fg='white', command=self.switch_to_ventes, height = 2, width = 30, font=("Impact", 15))
-        self.brapports = Button(self.frame_menu, text="📊 Rapports", bg='#2980b9', fg='white', command=self.switch_to_rapports, height = 2, width = 30, font=("Impact", 15))
-        self.bquitter = Button(self.frame_menu, text="❌ Quitter", bg='#e74c3c', fg='white', command=self.window.quit, height = 2, width = 30, font=("Impact", 15))
+        self.baccueil = Button(self.frame_menu, text="🏠 Accueil", bg='#2980b9', fg='white', command=self.switch_to_principal, height = 2, width = 30 ,font=("Impact", 12) )
+        self.bproduits = Button(self.frame_menu, text="📦 Produits", bg='#2980b9', fg='white', command=self.switch_to_produits, height = 2, width = 30, font=("Impact", 12) )
+        self.bfournisseurs = Button(self.frame_menu, text="🚚 Fournisseurs", bg='#2980b9', fg='white', command=self.switch_to_fournisseurs, height = 2, width = 30, font=("Impact", 12))
+        self.bventes = Button(self.frame_menu, text="🛒 Ventes", bg='#2980b9', fg='white', command=self.switch_to_ventes, height = 2, width = 30, font=("Impact", 12))
+        self.brapports = Button(self.frame_menu, text="📊 Rapports", bg='#2980b9', fg='white', command=self.switch_to_rapports, height = 2, width = 30, font=("Impact", 12))
+        self.bweb = Button(self.frame_menu, text="🌐 Projet Web", bg='#8e44ad', fg='white', command=lambda: webbrowser.open("https://projet.benzoogataga.com/"),height = 2, width = 30, font=("Impact", 12))
+        self.bquitter = Button(self.frame_menu, text="❌ Quitter", bg='#e74c3c', fg='white', command=self.window.quit, height = 2, width = 30, font=("Impact", 12))
 
-        for b in [self.baccueil, self.bproduits, self.bfournisseurs, self.bventes, self.brapports, self.bquitter]:
+        for b in [self.baccueil, self.bproduits, self.bfournisseurs, self.bventes, self.brapports, self.bweb, self.bquitter]:
+
             b.pack(side=LEFT, padx=10, pady=20)
 
         # Accueil
